@@ -13,34 +13,52 @@ class MainWindow(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
+        # Testing this block here - Define combo boxes then use in functions
+        # TODO - For some reason when defining first, the combo box moves
+        #        and sticks with the last row. Need to figure out why.
+        self.comboBox_fermentables = QtWidgets.QComboBox()        
+        ferm_test = ['', 'grain1', 'grain2', 'grain3']
+        self.comboBox_fermentables.addItems(ferm_test)
 
+        self.comboBox_hops = QtWidgets.QComboBox() 
+        hop_test = ['', 'hop1', 'hop2', 'hop3']
+        self.comboBox_hops.addItems(hop_test)
+        ######################
+        # Uncommenting from here down populates all rows with filled combo boxes
         # Initialize tables with combo box
-        self.comboBox_fermentables = QtWidgets.QComboBox()
+        #self.comboBox_fermentables = QtWidgets.QComboBox()
         self.ui.fermentableTable.setCellWidget(0, 0, self.comboBox_fermentables)
-        self.comboBox_hops = QtWidgets.QComboBox()
+        #self.comboBox_hops = QtWidgets.QComboBox()
         self.ui.hopsTable.setCellWidget(0, 0, self.comboBox_hops)
-
 
         # Connect buttons to functions
         self.ui.addfermentablesButton.clicked.connect(self.addfermentables)
         self.ui.addhopsButton.clicked.connect(self.addhops)
 
+        # Test lists with fermentables and hops
+        #ferm_test = ['', 'grain1', 'grain2', 'grain3']
+        #hop_test = ['', 'hop1', 'hop2', 'hop3']
+        #self.comboBox_fermentables.addItems(ferm_test)
+        #self.comboBox_hops.addItems(hop_test)
 
     def addfermentables(self):
         """Add row and insert combo box in fermentable column"""
 
         rowPos = self.ui.fermentableTable.rowCount()
-        self.comboBox = QtWidgets.QComboBox()
+        #self.comboBox_fermentables = QtWidgets.QComboBox()
         self.ui.fermentableTable.insertRow(rowPos)
-        self.ui.fermentableTable.setCellWidget(rowPos, 0, self.comboBox)
+        #ferm_test = ['', 'grain1', 'grain2', 'grain3']
+        #self.comboBox_fermentables.addItems(ferm_test)
+        self.ui.fermentableTable.setCellWidget(rowPos, 0, self.comboBox_fermentables)
     
 
     def addhops(self):
         """Add row and insert combo box in hops column"""
-
         rowPos = self.ui.hopsTable.rowCount()
-        self.comboBox_hops = QtWidgets.QComboBox()
+        #self.comboBox_hops = QtWidgets.QComboBox()
         self.ui.hopsTable.insertRow(rowPos)
+        #hop_test = ['', 'hop1', 'hop2', 'hop3']
+        #self.comboBox_hops.addItems(hop_test)
         self.ui.hopsTable.setCellWidget(rowPos, 0, self.comboBox_hops)
 
 
