@@ -13,32 +13,36 @@ class MainWindow(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
+
+        # Initialize tables with combo box
+        self.comboBox_fermentables = QtWidgets.QComboBox()
+        self.ui.fermentableTable.setCellWidget(0, 0, self.comboBox_fermentables)
+        self.comboBox_hops = QtWidgets.QComboBox()
+        self.ui.hopsTable.setCellWidget(0, 0, self.comboBox_hops)
+
+
+        # Connect buttons to functions
         self.ui.addfermentablesButton.clicked.connect(self.addfermentables)
-
-        #self.tableWidget = QtWidgets.QTableWidget()
-        #self.tableWidget.setGeometry(QtCore.QRect(220, 100, 411, 392))
-        #self.tableWidget.setColumnCount(3)
-        #self.tableWidget.setRowCount(5)
-        #self.tableWidget.show()
-
-        #attr = ['one', 'two', 'three', 'four', 'five']
-        #i = 0
-        #for j in attr:
-        #    self.tableWidget.setItem(i, 0, QtWidgets.QTableWidgetItem(j))
-        #    self.comboBox = QtWidgets.QComboBox()
-        #    self.tableWidget.setCellWidget(i, 1, self.comboBox)
-        #    self.tableWidget.setCurrentItem(i, 1, ["test1", "test2"])
-        #    self.comboBox.addItems(['Test1', 'Test2'])
-        #    i += 1
+        self.ui.addhopsButton.clicked.connect(self.addhops)
 
 
     def addfermentables(self):
         """Add row and insert combo box in fermentable column"""
 
         rowPos = self.ui.fermentableTable.rowCount()
-        comboBox = QtWidgets.QComboBox()
-        self.ui.fermentableTable.setCellWidget(rowPos, 0, comboBox)
+        self.comboBox = QtWidgets.QComboBox()
         self.ui.fermentableTable.insertRow(rowPos)
+        self.ui.fermentableTable.setCellWidget(rowPos, 0, self.comboBox)
+    
+
+    def addhops(self):
+        """Add row and insert combo box in hops column"""
+
+        rowPos = self.ui.hopsTable.rowCount()
+        self.comboBox_hops = QtWidgets.QComboBox()
+        self.ui.hopsTable.insertRow(rowPos)
+        self.ui.hopsTable.setCellWidget(rowPos, 0, self.comboBox_hops)
+
 
     def fermentable_list(self):
         df = pd.read_excel('Grain.xlsx')
