@@ -13,12 +13,11 @@ class MainWindow(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
+        self.fermentable_list()
+
         # Testing this block here - Define combo boxes then use in functions
-        # TODO - For some reason when defining first, the combo box moves
-        #        and sticks with the last row. Need to figure out why.
-        self.comboBox_fermentables = QtWidgets.QComboBox()        
-        ferm_test = ['', 'grain1', 'grain2', 'grain3']
-        self.comboBox_fermentables.addItems(ferm_test)
+        comboBox_fermentables = QtWidgets.QComboBox()
+        comboBox_fermentables.addItems(self.FERMENTABLE_LIST)
 
         self.comboBox_hops = QtWidgets.QComboBox() 
         hop_test = ['', 'hop1', 'hop2', 'hop3']
@@ -26,8 +25,7 @@ class MainWindow(QMainWindow):
         ######################
         # Uncommenting from here down populates all rows with filled combo boxes
         # Initialize tables with combo box
-        #self.comboBox_fermentables = QtWidgets.QComboBox()
-        self.ui.fermentableTable.setCellWidget(0, 0, self.comboBox_fermentables)
+        self.ui.fermentableTable.setCellWidget(0, 0, comboBox_fermentables)
         #self.comboBox_hops = QtWidgets.QComboBox()
         self.ui.hopsTable.setCellWidget(0, 0, self.comboBox_hops)
 
@@ -45,11 +43,11 @@ class MainWindow(QMainWindow):
         """Add row and insert combo box in fermentable column"""
 
         rowPos = self.ui.fermentableTable.rowCount()
-        #self.comboBox_fermentables = QtWidgets.QComboBox()
+        # New instance of a combobox is created
+        new_ferm_combobox = QtWidgets.QComboBox()
+        new_ferm_combobox.addItems(self.FERMENTABLE_LIST)
         self.ui.fermentableTable.insertRow(rowPos)
-        #ferm_test = ['', 'grain1', 'grain2', 'grain3']
-        #self.comboBox_fermentables.addItems(ferm_test)
-        self.ui.fermentableTable.setCellWidget(rowPos, 0, self.comboBox_fermentables)
+        self.ui.fermentableTable.setCellWidget(rowPos, 0, new_ferm_combobox)
     
 
     def addhops(self):
@@ -64,7 +62,8 @@ class MainWindow(QMainWindow):
 
     def fermentable_list(self):
         df = pd.read_excel('Grain.xlsx')
-        self.ferm_list = df['Fermentable']
+        self.FERMENTABLE_LIST = df['Fermentable'].to_list()
+        self.FERMENTABLE_LIST .insert(0, '')
 
 
 if __name__ == "__main__":
