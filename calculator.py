@@ -89,7 +89,9 @@ class MainWindow(QMainWindow):
         # Get currently selected row
         # TODO: Figure out how to get the current index of the combo box that
         # is being changed. Right now, whatever row is selected in the GUI will
-        # be updated, regardless of the combo box that changes.
+        # be updated, regardless of the combo box that changes. Need to
+        # change currentIndexChanged so it accepts [int] and [str] instead of
+        # just [str]? Has something to do with overloading signals.
         curRow = self.ui.fermentableTable.currentRow()
        
         # Add PPG and L stats to table
