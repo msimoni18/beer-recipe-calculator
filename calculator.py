@@ -21,7 +21,6 @@ class MainWindow(QMainWindow):
         hops_type_comboBox = QtWidgets.QComboBox()
 
         hops_comboBox.addItems(hop_test)
-        hops_type_comboBox.addItems(['', 'Boil', 'Aroma', 'Dry'])
 
         self.ui.hopsTable.setCellWidget(0, 1, hops_comboBox)        
         self.ui.hopsTable.setCellWidget(0, 0, hops_type_comboBox)
@@ -47,7 +46,7 @@ class MainWindow(QMainWindow):
         fermentables_amount_comboBox.addItems(['', 'lb', 'oz'])
 
         # Check when current index changes and print text
-        fermentables_comboBox.currentIndexChanged[str].connect(self.print_selected_text)
+        fermentables_comboBox.currentIndexChanged[str].connect(self.populate_table)
         
         # Insert new row and add combo boxes
         self.ui.fermentableTable.insertRow(rowPos)
@@ -58,7 +57,6 @@ class MainWindow(QMainWindow):
 
     def add_hops(self):
         """Add row and insert combo boxes in hops columns."""
-        
         rowPos = self.ui.hopsTable.rowCount()
        
         # Create new instance of combo boxes
@@ -82,9 +80,23 @@ class MainWindow(QMainWindow):
         self.FERMENTABLE_LIST.insert(0, '')
 
 
-    def print_selected_text(self, text):
-        """Print text from combo box."""
-        print(text)
+    def populate_table(self, text):
+        """Populate table based on fermentable selected.."""
+        # Get stats for grain selected in combo box
+        df = pd.read_excel('files/Grain.xlsx')
+        stats = df.loc[df['Fermentable']==text, :]
+
+        # Get currently selected row
+        # TODO: Figure out how to get the current index of the combo box that
+        # is being changed. Right now, whatever row is selected in the GUI will
+        # be updated, regardless of the combo box that changes.
+        curRow = self.ui.fermentableTable.currentRow()
+       
+        # Add PPG and L stats to table
+        self.ui.fermentableTable.setItem(curRow, 5,
+                QtWidgets.QTableWidgetItem(str(int(stats['PPG'].iloc[0]))))
+        self.ui.fermentableTable.setItem(curRow, 7,
+                QtWidgets.QTableWidgetItem(str(stats['L'].iloc[0])))
 
 
     def remove_fermentables(self):
